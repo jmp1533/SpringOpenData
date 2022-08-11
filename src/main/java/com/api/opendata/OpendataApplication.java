@@ -9,4 +9,6 @@ public class OpendataApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OpendataApplication.class, args);
 	}
+
 }
+

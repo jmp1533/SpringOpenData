@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.api'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '18'
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
@@ -22,7 +22,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-def reactAppDir = "$projectDir/src/main/webapp/ReactApp"
+def reactAppDir = "$projectDir/src/main/webapp/reactapp"
 
 sourceSets {
 	main {
@@ -33,7 +33,7 @@ sourceSets {
 }
 
 processResources {
-	dependsOn "copyReactBuildFiles"
+	dependsOn "copyReactFile"
 }
 
 task installReact(type: Exec) {
@@ -61,12 +61,8 @@ task buildReact(type: Exec) {
 	}
 }
 
-task copyReactBuildFiles(type: Copy) {
+task copyReactFile(type: Copy) {
 	dependsOn "buildReact"
 	from "$reactAppDir/build"
 	into "$buildDir/resources/main/static"
-}
-
-tasks.bootJar {
-	dependsOn "copyReactBuildFiles"
 }

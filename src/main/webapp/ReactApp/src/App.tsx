@@ -7,14 +7,14 @@ function App() {
     const [message, setMessage] = useState([]);
 
     useEffect(() => {
-            fetch("/api/movie")
-                .then((response) => {
-                    return response.json();
-                })
-                .then(function (data) {
-                    setMessage(data);
-                });
-        }, []);
+        fetch("/api/movie")
+            .then((response) => {
+                return response.json();
+            })
+            .then(function (data) {
+                setMessage(data);
+            });
+    }, []);
 
   return (
     <div className="App">

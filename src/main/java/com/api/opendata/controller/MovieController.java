@@ -10,7 +10,9 @@ import java.util.List;
 public class MovieController {
 
     @RequestMapping("/api/movie")
-    public List<String> MovieHome(){
-        return Arrays.asList("안녕하세요", "Hello");
+    public List<String> MovieList()
+    {
+        return Arrays.asList("영화보기", "Movie");
     }
 }
+
