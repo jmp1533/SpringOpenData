@@ -1,6 +1,10 @@
 package com.api.opendata.controller;
 
+import com.api.opendata.common.util.Utility;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
@@ -21,25 +25,66 @@ import java.util.List;
 @RestController
 public class BoxOfficeController {
 
+    static String _url = "http://kobis.or.kr";
+    static final String _key = "f5eef3421c602c6cb7ea2241047958888";
+
     @RequestMapping("/api/boxOffice/daily")
-    public List<String> SearchDailyBoxOfficeList()
+    public String SearchDailyBoxOfficeList(@RequestParam String targetDt)
     {
-        return null;
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        String urlPath = "/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json";
+        String result = "";
+
+        params.add("key", _key);
+        params.add("targetDt", targetDt);
+
+        result = Utility.GetHttp(_url, urlPath, params);
+
+        return result;
     }
 
     @RequestMapping("/api/boxOffice/weekly")
-    public List<String> SearchWeeklyBoxOfficeList(){
-        return null;
+    public String SearchWeeklyBoxOfficeList(@RequestParam String targetDt)
+    {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        String urlPath = "/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json";
+        String result = "";
+
+        params.add("key", _key);
+        params.add("targetDt", targetDt);
+
+        result = Utility.GetHttp(_url, urlPath, params);
+
+        return result;
     }
 
     @RequestMapping("/api/boxOffice/movieList")
-    public List<String> SearchMovieList(){
-        return Arrays.asList("영화보기", "Movie");
+    public String SearchMovieList()
+    {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        String urlPath = "/kobisopenapi/webservice/rest/movie/searchMovieList.json";
+        String result = "";
+
+        params.add("key", _key);
+
+        result = Utility.GetHttp(_url, urlPath, params);
+
+        return result;
     }
 
     @RequestMapping("/api/boxOffice/movieInfo")
-    public List<String> SearchMovieInfo(){
-        return null;
+    public String SearchMovieInfo(@RequestParam String movieCd)
+    {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        String urlPath = "/kobisopenapi/webservice/rest/movie/searchMovieInfo.json";
+        String result = "";
+
+        params.add("key", _key);
+        params.add("movieCd", movieCd);
+
+        result = Utility.GetHttp(_url, urlPath, params);
+
+        return result;
     }
 }
 
