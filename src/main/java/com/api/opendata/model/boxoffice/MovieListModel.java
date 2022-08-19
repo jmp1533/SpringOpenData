@@ -1,10 +1,10 @@
-package com.api.opendata.Model;
+package com.api.opendata.model.boxoffice;
 
 import lombok.*;
 
 import java.util.ArrayList;
 
-public class MovieModel {
+public class MovieListModel {
 
     @Data
     @AllArgsConstructor
@@ -21,13 +21,13 @@ public class MovieModel {
     {
         private int totCnt;
         private String source;
-        private ArrayList<MovieList> movieList;
+        private ArrayList<Movie> movieList;
     }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    static public class MovieList
+    static public class Movie
     {
         private String movieCd;
         private String movieNm;

@@ -1,6 +1,6 @@
 package com.api.opendata.controller;
 
-import com.api.opendata.Model.MovieModel;
+import com.api.opendata.model.boxoffice.MovieListModel;
 import com.api.opendata.common.util.Utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.LinkedMultiValueMap;
@@ -8,8 +8,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import lombok.Data;
 
 /*
  * 영화박스오피스 DB (일 3000회 제한)
@@ -72,7 +70,7 @@ public class BoxOfficeController {
 
             result = Utility.GetHttp(_url, urlPath, params);
 
-            MovieModel.MovieListResponse test = objectMapper.readValue(result, MovieModel.MovieListResponse.class);
+            MovieListModel.MovieListResponse test = objectMapper.readValue(result, MovieListModel.MovieListResponse.class);
 
             result = test.getMovieListResult().getTotCnt() + "";
         }
