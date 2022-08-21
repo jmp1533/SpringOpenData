@@ -5,6 +5,21 @@ import lombok.*;
 import java.util.ArrayList;
 
 public class MovieListModel {
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static public class MovieListRequest{
+        private String curPage;
+        private String itemPerPage;
+        private String movieNm;
+        private String directorNm;
+        private String openStartDt;
+        private String openEndDt;
+        private String prdtStartYear;
+        private String prdtEndYear;
+        private String repNationCd;
+        private String movieTypeCd;
+    }
 
     @Data
     @AllArgsConstructor
@@ -17,7 +32,7 @@ public class MovieListModel {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    static public class MovieListResult
+    public class MovieListResult
     {
         private int totCnt;
         private String source;
@@ -27,7 +42,7 @@ public class MovieListModel {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    static public class Movie
+    public class Movie
     {
         private String movieCd;
         private String movieNm;
@@ -47,7 +62,7 @@ public class MovieListModel {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    static public class Director
+    public class Director
     {
         private String peopleNm;
     }
@@ -55,7 +70,7 @@ public class MovieListModel {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    static public class Company
+    public class Company
     {
         private String companyCd;
         private String companyNm;
