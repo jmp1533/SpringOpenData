@@ -28,6 +28,8 @@ public class BoxOfficeService {
         //WeeklyBoxOffice
         WeeklyBoxOfficeModel.WeeklyBoxOfficeRequest weeklyRequest = new WeeklyBoxOfficeModel.WeeklyBoxOfficeRequest();
         weeklyRequest.setTargetDt(targetDt);
+        weeklyRequest.setWeekGb("0");
+        weeklyRequest.setMultiMovieYn("N");
         weeklyResponse = boxOffice.SearchWeeklyBoxOffice(weeklyRequest);
 
         result.append(WeeklyBoxOfficeCard(weeklyResponse));
@@ -72,8 +74,10 @@ public class BoxOfficeService {
         StringBuffer weeklyCard = new StringBuffer();
 
         //weeklyCard.append(System.lineSeparator());
+        weeklyCard.append("[" + weeklyResponse.getBoxOfficeResult().getBoxofficeType() + " / " + weeklyResponse.getBoxOfficeResult().getShowRange() + "]");
 
 
+        weeklyCard.append(System.lineSeparator());
 
         return weeklyCard;
     }
