@@ -6,6 +6,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.text.DecimalFormat;
+
 public class Utility {
 
     static public String GetHttp(String url, String urlPath, MultiValueMap<String, String> params){
@@ -26,5 +28,11 @@ public class Utility {
                             .block();
 
         return result;
+    }
+
+    static public Object GetDecimalFormat(String value, String format){
+        DecimalFormat decimalFormat = new DecimalFormat(format);
+
+        return decimalFormat.format(Integer.parseInt(value));
     }
 }
