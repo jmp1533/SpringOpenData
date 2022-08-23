@@ -7,7 +7,7 @@ function App() {
     const [message, setMessage] = useState([]);
 
     useEffect(() => {
-        fetch("/api/boxOffice/movieList")
+        fetch("/api/boxOffice/search")
             .then((response) => {
                 return response.json();
             })

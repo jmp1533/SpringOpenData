@@ -1,13 +1,11 @@
 package com.api.opendata.model.boxoffice;
 
 import lombok.*;
-
 import java.util.ArrayList;
 
 public class MovieListModel {
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class MovieListRequest{
         private String curPage;
         private String itemPerPage;
@@ -21,28 +19,25 @@ public class MovieListModel {
         private String movieTypeCd;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class MovieListResponse
     {
         private MovieListResult movieListResult;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class MovieListResult
+    @Getter
+    @Setter
+    static public class MovieListResult
     {
         private int totCnt;
         private String source;
         private ArrayList<Movie> movieList;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class Movie
+    @Getter
+    @Setter
+    static public class Movie
     {
         private String movieCd;
         private String movieNm;
@@ -59,18 +54,16 @@ public class MovieListModel {
         private ArrayList<Company> companys;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class Director
+    @Getter
+    @Setter
+    static public class Director
     {
         private String peopleNm;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class Company
+    @Getter
+    @Setter
+    static public class Company
     {
         private String companyCd;
         private String companyNm;

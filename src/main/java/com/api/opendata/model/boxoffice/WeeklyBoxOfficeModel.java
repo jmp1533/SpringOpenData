@@ -1,16 +1,14 @@
 package com.api.opendata.model.boxoffice;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 public class WeeklyBoxOfficeModel {
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class WeeklyBoxOfficeRequest{
         private String targetDt;
         private String weekGb;
@@ -20,17 +18,15 @@ public class WeeklyBoxOfficeModel {
         private String wideAreaCd;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class WeeklyBoxOfficeResponse
     {
         private BoxOfficeResult boxOfficeResult;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class BoxOfficeResult
     {
         private String boxofficeType;
@@ -39,9 +35,8 @@ public class WeeklyBoxOfficeModel {
         private ArrayList<WeeklyBoxOffice> weeklyBoxOfficeList;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class WeeklyBoxOffice
     {
         private String rnum;

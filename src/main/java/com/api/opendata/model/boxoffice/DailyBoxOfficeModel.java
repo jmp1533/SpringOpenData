@@ -1,14 +1,12 @@
 package com.api.opendata.model.boxoffice;
 
 import lombok.*;
-
 import java.util.ArrayList;
 
 public class DailyBoxOfficeModel {
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class DailyBoxOfficeRequest{
         private String targetDt;
         private String itemPerPage;
@@ -17,17 +15,15 @@ public class DailyBoxOfficeModel {
         private String wideAreaCd;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class DailyBoxOfficeResponse
     {
         private BoxOfficeResult boxOfficeResult;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class BoxOfficeResult
     {
         private String boxofficeType;
@@ -35,9 +31,8 @@ public class DailyBoxOfficeModel {
         private ArrayList<DailyBoxOffice> dailyBoxOfficeList;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Getter
+    @Setter
     static public class DailyBoxOffice
     {
         private String rnum;

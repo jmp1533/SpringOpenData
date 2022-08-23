@@ -1,52 +1,63 @@
 package com.api.opendata.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.api.opendata.common.util.Utility;
-import com.api.opendata.model.boxoffice.DailyBoxOfficeModel;
-import com.api.opendata.model.boxoffice.WeeklyBoxOfficeModel;
+import com.api.opendata.model.boxoffice.*;
 import com.api.opendata.process.BoxOffice;
+import java.util.HashMap;
 
+@Service
 public class BoxOfficeService {
+    @Autowired
+    private BoxOffice boxOffice;
 
-    public String RunSearch(String targetDt)
+    public HashMap<String, String> RunSearch(String targetDt)
     {
-        BoxOffice boxOffice = new BoxOffice();
-
+        DailyBoxOfficeModel.DailyBoxOfficeRequest dailyRequest = new DailyBoxOfficeModel.DailyBoxOfficeRequest();
+        WeeklyBoxOfficeModel.WeeklyBoxOfficeRequest weeklyRequest = new WeeklyBoxOfficeModel.WeeklyBoxOfficeRequest();
+        MovieListModel.MovieListRequest movieListRequest = new MovieListModel.MovieListRequest();
         DailyBoxOfficeModel.DailyBoxOfficeResponse dailyResponse = null;
         WeeklyBoxOfficeModel.WeeklyBoxOfficeResponse weeklyResponse = null;
-        StringBuffer result = new StringBuffer();
+        MovieListModel.MovieListResponse movieListResponse = null;
 
-        //DailyBoxOffice
-        DailyBoxOfficeModel.DailyBoxOfficeRequest dailyBoxOfficeRequest = new DailyBoxOfficeModel.DailyBoxOfficeRequest();
-        dailyBoxOfficeRequest.setTargetDt(targetDt);
-        dailyBoxOfficeRequest.setMultiMovieYn("N"); //상업영화
-        //dailyBoxOfficeRequest.setWideAreaCd("0105001"); //서울
-        dailyResponse = boxOffice.SearchDailyBoxOffice(dailyBoxOfficeRequest);
+        HashMap<String, String> result = new HashMap<String, String>();
 
-        result.append(DailyBoxOfficeCard(dailyResponse));
+        try{
+            //DailyBoxOffice
+            dailyRequest.setTargetDt(targetDt);
+            dailyRequest.setMultiMovieYn("N"); //상업영화
+            //dailyRequest.setWideAreaCd("0105001"); //서울
+            dailyResponse = boxOffice.SearchDailyBoxOffice(dailyRequest);
 
-
-        //WeeklyBoxOffice
-        WeeklyBoxOfficeModel.WeeklyBoxOfficeRequest weeklyRequest = new WeeklyBoxOfficeModel.WeeklyBoxOfficeRequest();
-        weeklyRequest.setTargetDt(targetDt);
-        weeklyRequest.setWeekGb("0");
-        weeklyRequest.setMultiMovieYn("N");
-        weeklyResponse = boxOffice.SearchWeeklyBoxOffice(weeklyRequest);
-
-        result.append(WeeklyBoxOfficeCard(weeklyResponse));
+            //result.put("DailyBoxOffice", DailyBoxOfficeCard(dailyResponse));
 
 
+            //WeeklyBoxOffice
+            weeklyRequest.setTargetDt(targetDt);
+            weeklyRequest.setWeekGb("0");
+            weeklyRequest.setMultiMovieYn("N");
+            weeklyResponse = boxOffice.SearchWeeklyBoxOffice(weeklyRequest);
 
-        /*MovieListModel.MovieListRequest movieListRequest = new MovieListModel.MovieListRequest();
-        movieListRequest.setRepNationCd("22041011"); //한국
-        movieListRequest.setMovieTypeCd("220101");
-        result = boxOffice.SearchMovieList(movieListRequest);*/
+            //result.put("WeeklyBoxOffice", WeeklyBoxOfficeCard(weeklyResponse));
 
-        //boxOffice.SearchMovieInfo("");
 
-        return result.toString();
+            //MovieList
+            movieListRequest.setRepNationCd("22041011"); //한국
+            movieListRequest.setMovieTypeCd("220101"); //장편
+            movieListResponse = boxOffice.SearchMovieList(movieListRequest);
+
+            result.put("MovieList", MovieListCard(movieListResponse));
+
+
+            //boxOffice.SearchMovieInfo("");
+        }catch (Exception e){
+        }
+
+        return result;
     }
 
-    public StringBuffer DailyBoxOfficeCard(DailyBoxOfficeModel.DailyBoxOfficeResponse dailyResponse){
+    public String DailyBoxOfficeCard(DailyBoxOfficeModel.DailyBoxOfficeResponse dailyResponse){
         StringBuffer dailyCard = new StringBuffer();
 
         dailyCard.append("[" + dailyResponse.getBoxOfficeResult().getBoxofficeType() + " / " + dailyResponse.getBoxOfficeResult().getShowRange() + "]");
@@ -67,18 +78,30 @@ public class BoxOfficeService {
 
         dailyCard.append(System.lineSeparator());
 
-        return dailyCard;
+        return dailyCard.toString();
     }
 
-    public StringBuffer WeeklyBoxOfficeCard(WeeklyBoxOfficeModel.WeeklyBoxOfficeResponse weeklyResponse){
+    public String WeeklyBoxOfficeCard(WeeklyBoxOfficeModel.WeeklyBoxOfficeResponse weeklyResponse){
         StringBuffer weeklyCard = new StringBuffer();
 
         //weeklyCard.append(System.lineSeparator());
         weeklyCard.append("[" + weeklyResponse.getBoxOfficeResult().getBoxofficeType() + " / " + weeklyResponse.getBoxOfficeResult().getShowRange() + "]");
 
-
         weeklyCard.append(System.lineSeparator());
 
-        return weeklyCard;
+        return weeklyCard.toString();
+    }
+
+    public String MovieListCard(MovieListModel.MovieListResponse movieListResponse){
+        StringBuffer movieListCard = new StringBuffer();
+
+        for(MovieListModel.Movie movie : movieListResponse.getMovieListResult().getMovieList()){
+            // 대표장르 | 영화명
+            movieListCard.append(movie.getRepGenreNm()  + " | " + movie.getMovieNm());
+
+            movieListCard.append(System.lineSeparator());
+        }
+
+        return movieListCard.toString();
     }
 }
