@@ -13,6 +13,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok'

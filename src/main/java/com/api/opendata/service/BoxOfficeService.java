@@ -47,11 +47,20 @@ public class BoxOfficeService {
             movieListRequest.setMovieTypeCd("220101"); //장편
             movieListResponse = boxOffice.SearchMovieList(movieListRequest);
 
-            result.put("MovieList", MovieListCard(movieListResponse));
+            //result.put("MovieList", MovieListCard(movieListResponse));
+
+            //MovieList JDBC
+            String movieListDB = boxOffice.SearchMovieListDB();
+            result.put("MovieListDB", movieListDB);
+
+            //MovieList MyBatis
+            String movieListMyBatis = boxOffice.SearchMovieListMyBatis();
+            result.put("MovieListMyBatis", movieListMyBatis);
 
 
             //boxOffice.SearchMovieInfo("");
         }catch (Exception e){
+            result.put("Error", e.getMessage());
         }
 
         return result;

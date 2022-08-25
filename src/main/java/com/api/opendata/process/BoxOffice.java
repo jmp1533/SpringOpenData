@@ -1,17 +1,22 @@
 package com.api.opendata.process;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.api.opendata.common.util.Utility;
 import com.api.opendata.model.boxoffice.*;
+import com.api.opendata.dao.BoxOfficeDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import java.util.List;
 
 @Service
 public class BoxOffice {
     static String _url = "http://kobis.or.kr";
-    static final String _key = "f5eef3421c602c6cb7ea224104795888";
+    static final String _key = "f5eef3421c602c6cb7ea2241047958888";
+    @Autowired
+    BoxOfficeDao boxOfficeDao;
 
     public DailyBoxOfficeModel.DailyBoxOfficeResponse SearchDailyBoxOffice(DailyBoxOfficeModel.DailyBoxOfficeRequest dailyRequest) throws JsonProcessingException
     {
@@ -81,5 +86,35 @@ public class BoxOffice {
         result = Utility.GetHttp(_url, urlPath, params);
 
         return result;
+    }
+
+    public String SearchMovieListDB()
+    {
+        StringBuffer movieListCard = new StringBuffer();
+
+        List<MovieListModel.Movie> movieList = boxOfficeDao.SearchMovie();
+
+        for(MovieListModel.Movie movie: movieList){
+            movieListCard.append(movie.getRepGenreNm() + " | " + movie.getMovieNm());
+
+            movieListCard.append(System.lineSeparator());
+        }
+
+        return movieListCard.toString();
+    }
+
+    public String SearchMovieListMyBatis()
+    {
+        StringBuffer movieListCard = new StringBuffer();
+
+        List<MovieVO> movieList = boxOfficeDao.SearchMovieMyBatis();
+
+        for(MovieVO movie: movieList){
+            movieListCard.append(movie.getId() + " | " + movie.getRepGenreNm() + " | " + movie.getMovieNm());
+
+            movieListCard.append(System.lineSeparator());
+        }
+
+        return movieListCard.toString();
     }
 }

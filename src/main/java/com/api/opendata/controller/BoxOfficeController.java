@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 
 @RestController
-@RequestMapping("/api/boxOffice/*")
+@RequestMapping("/api/boxoffice/*")
 public class BoxOfficeController {
     @Autowired
     private BoxOfficeService boxOfficeService;
