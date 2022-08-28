@@ -5,12 +5,16 @@ import org.springframework.stereotype.Service;
 import com.api.opendata.common.util.Utility;
 import com.api.opendata.model.boxoffice.*;
 import com.api.opendata.process.BoxOffice;
+import com.api.opendata.dao.BoxOfficeRepository;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class BoxOfficeService {
     @Autowired
     private BoxOffice boxOffice;
+    @Autowired
+    private BoxOfficeRepository boxOfficeRepository;
 
     public HashMap<String, String> RunSearch(String targetDt)
     {
@@ -57,6 +61,9 @@ public class BoxOfficeService {
             String movieListMyBatis = boxOffice.SearchMovieListMyBatis();
             result.put("MovieListMyBatis", movieListMyBatis);
 
+            //MovieList JPA
+            List<MovieVO> movieList = boxOfficeRepository.findAll();
+            result.put("MovieListJPA", MovieListVOCard(movieList));
 
             //boxOffice.SearchMovieInfo("");
         }catch (Exception e){
@@ -107,6 +114,18 @@ public class BoxOfficeService {
         for(MovieListModel.Movie movie : movieListResponse.getMovieListResult().getMovieList()){
             // 대표장르 | 영화명
             movieListCard.append(movie.getRepGenreNm()  + " | " + movie.getMovieNm());
+
+            movieListCard.append(System.lineSeparator());
+        }
+
+        return movieListCard.toString();
+    }
+
+    public String MovieListVOCard(List<MovieVO> movieList){
+        StringBuffer movieListCard = new StringBuffer();
+
+        for(MovieVO movie: movieList){
+            movieListCard.append(movie.getId() + " | " + movie.getRepGenreNm() + " | " + movie.getMovieNm());
 
             movieListCard.append(System.lineSeparator());
         }

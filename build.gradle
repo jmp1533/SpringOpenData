@@ -13,7 +13,11 @@ repositories {
 }
 
 dependencies {
+	//JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//MyBatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+	//JDBC
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'

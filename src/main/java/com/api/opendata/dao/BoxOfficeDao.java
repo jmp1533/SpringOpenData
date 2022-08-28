@@ -1,6 +1,7 @@
 package com.api.opendata.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -17,7 +18,7 @@ public class BoxOfficeDao {
     private SqlSessionTemplate sqlSession;
 
     public List<MovieListModel.Movie> SearchMovie() {
-        String query = "select * from tbl_Movie";
+        String query = "SELECT * FROM tbl_Movie";
 
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<MovieListModel.Movie>(MovieListModel.Movie.class));
     }
