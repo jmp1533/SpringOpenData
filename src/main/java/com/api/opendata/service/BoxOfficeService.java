@@ -13,7 +13,7 @@ import java.util.List;
 public class BoxOfficeService {
     @Autowired
     private BoxOffice boxOffice;
-    @Autowired
+    //@Autowired
     private BoxOfficeRepository boxOfficeRepository;
 
     public HashMap<String, String> RunSearch(String targetDt)
@@ -28,42 +28,39 @@ public class BoxOfficeService {
         HashMap<String, String> result = new HashMap<String, String>();
 
         try{
-            //DailyBoxOffice
+            /*//DailyBoxOffice
             dailyRequest.setTargetDt(targetDt);
             dailyRequest.setMultiMovieYn("N"); //상업영화
             //dailyRequest.setWideAreaCd("0105001"); //서울
             dailyResponse = boxOffice.SearchDailyBoxOffice(dailyRequest);
+            //result.put("DailyBoxOffice", DailyBoxOfficeCard(dailyResponse));*/
 
-            //result.put("DailyBoxOffice", DailyBoxOfficeCard(dailyResponse));
 
-
-            //WeeklyBoxOffice
+            /*//WeeklyBoxOffice
             weeklyRequest.setTargetDt(targetDt);
             weeklyRequest.setWeekGb("0");
             weeklyRequest.setMultiMovieYn("N");
             weeklyResponse = boxOffice.SearchWeeklyBoxOffice(weeklyRequest);
-
-            //result.put("WeeklyBoxOffice", WeeklyBoxOfficeCard(weeklyResponse));
+            //result.put("WeeklyBoxOffice", WeeklyBoxOfficeCard(weeklyResponse));*/
 
 
             //MovieList
             movieListRequest.setRepNationCd("22041011"); //한국
             movieListRequest.setMovieTypeCd("220101"); //장편
             movieListResponse = boxOffice.SearchMovieList(movieListRequest);
+            result.put("MovieList", MovieListCard(movieListResponse));
 
-            //result.put("MovieList", MovieListCard(movieListResponse));
-
-            //MovieList JDBC
+            /*//MovieList JDBC
             String movieListDB = boxOffice.SearchMovieListDB();
-            result.put("MovieListDB", movieListDB);
+            result.put("MovieListDB", movieListDB);*/
 
-            //MovieList MyBatis
+            /*//MovieList MyBatis
             String movieListMyBatis = boxOffice.SearchMovieListMyBatis();
-            result.put("MovieListMyBatis", movieListMyBatis);
+            result.put("MovieListMyBatis", movieListMyBatis);*/
 
-            //MovieList JPA
+            /*//MovieList JPA
             List<MovieVO> movieList = boxOfficeRepository.findAll();
-            result.put("MovieListJPA", MovieListVOCard(movieList));
+            result.put("MovieListJPA", MovieListVOCard(movieList));*/
 
             //boxOffice.SearchMovieInfo("");
         }catch (Exception e){

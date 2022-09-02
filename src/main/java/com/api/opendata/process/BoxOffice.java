@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class BoxOffice {
     static String _url = "http://kobis.or.kr";
-    static final String _key = "f5eef3421c602c6cb7ea2241047958888";
+    static final String _key = "f5eef3421c602c6cb7ea224104795888";
     @Autowired
     BoxOfficeDao boxOfficeDao;
 

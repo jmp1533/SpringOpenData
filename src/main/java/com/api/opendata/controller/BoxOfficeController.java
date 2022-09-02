@@ -1,10 +1,17 @@
 package com.api.opendata.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.api.opendata.service.BoxOfficeService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /*
@@ -36,4 +43,6 @@ public class BoxOfficeController {
         return result;
     }
 }
+
+
 

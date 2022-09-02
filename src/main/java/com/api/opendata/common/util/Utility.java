@@ -1,5 +1,7 @@
 package com.api.opendata.common.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
@@ -27,6 +29,26 @@ public class Utility {
                             .block();
 
         return result;
+    }
+
+    /*
+     * Utility.JsonSerialize(listCard);
+     */
+    static public String JsonSerialize(Object value)  throws JsonProcessingException
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.writeValueAsString(value);
+    }
+
+    /*
+     * Utility.JsonDeSerialize(rankMovie, ListCardReponse.class);
+     */
+    static public <T> T JsonDeSerialize(String value, Class<T> obj)  throws JsonProcessingException
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.readValue(value, obj);
     }
 
     static public Object GetDecimalFormat(String value, String format){
