@@ -6,7 +6,6 @@ import com.api.opendata.common.util.Utility;
 import com.api.opendata.model.chatbot.ListCardReponse;
 import com.api.opendata.process.Movie;
 
-
 @Service
 public class MovieService {
     @Autowired
