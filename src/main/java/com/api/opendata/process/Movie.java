@@ -2,6 +2,7 @@ package com.api.opendata.process;
 
 
 import com.api.opendata.model.chatbot.ListCardReponse;
+import com.api.opendata.model.chatbot.ListCardRequest;
 import org.springframework.stereotype.Service;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -19,7 +20,7 @@ public class Movie {
     static String _movie_url = "https://movie.naver.com";
     static String _schdule_url = "https://movie.naver.com/movie/running/premovie.nhn?order=reserve"; // 네이버영화 개봉 예정작 예매순 1~20위
 
-    public ListCardReponse RankMovie() throws JsonProcessingException, IOException
+    public ListCardReponse RankMovie(ListCardRequest request) throws JsonProcessingException, IOException
     {
         ListCardReponse listCardRS = new ListCardReponse();
         ListCardReponse.Template Template = new ListCardReponse.Template();

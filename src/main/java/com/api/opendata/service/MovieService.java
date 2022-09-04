@@ -1,5 +1,6 @@
 package com.api.opendata.service;
 
+import com.api.opendata.model.chatbot.ListCardRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.api.opendata.common.util.Utility;
@@ -11,12 +12,12 @@ public class MovieService {
     @Autowired
     private Movie movie;
 
-    public String RankMovieSearch()
+    public String RankMovieSearch(ListCardRequest request)
     {
         String response = "";
 
         try{
-            ListCardReponse listCard = movie.RankMovie();
+            ListCardReponse listCard = movie.RankMovie(request);
 
             response = Utility.JsonSerialize(listCard);
 

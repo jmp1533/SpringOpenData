@@ -12,6 +12,10 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+	enabled = false
+}
+
 dependencies {
 	//API Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'

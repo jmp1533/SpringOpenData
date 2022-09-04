@@ -1,10 +1,9 @@
 package com.api.opendata.controller;
 
+import com.api.opendata.model.chatbot.ListCardRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 import com.api.opendata.service.MovieService;
@@ -17,12 +16,12 @@ public class KakaoChatbotController {
     private MovieService movieService;
 
     @PostMapping(value = "/movie/rank/search", produces = "application/json; charset=UTF8")
-    public ResponseEntity SearchMovie()
+    public ResponseEntity SearchMovie(@RequestBody ListCardRequest request)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
-        String response = movieService.RankMovieSearch();;
+        String response = movieService.RankMovieSearch(request);;
 
         return ResponseEntity.ok().headers(headers).body(response);
     }
