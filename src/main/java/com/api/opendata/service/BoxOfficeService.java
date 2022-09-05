@@ -13,7 +13,7 @@ import java.util.List;
 public class BoxOfficeService {
     @Autowired
     private BoxOffice boxOffice;
-    //@Autowired
+    @Autowired
     private BoxOfficeRepository boxOfficeRepository;
 
     public HashMap<String, String> RunSearch(String targetDt)
@@ -44,11 +44,11 @@ public class BoxOfficeService {
             //result.put("WeeklyBoxOffice", WeeklyBoxOfficeCard(weeklyResponse));*/
 
 
-            //MovieList
+            /*//MovieList
             movieListRequest.setRepNationCd("22041011"); //한국
             movieListRequest.setMovieTypeCd("220101"); //장편
             movieListResponse = boxOffice.SearchMovieList(movieListRequest);
-            result.put("MovieList", MovieListCard(movieListResponse));
+            result.put("MovieList", MovieListCard(movieListResponse));*/
 
             /*//MovieList JDBC
             String movieListDB = boxOffice.SearchMovieListDB();
