@@ -18,7 +18,8 @@ import java.util.Arrays;
 
 @Service
 public class Movie {
-    static String _current_movie_url = "https://movie.naver.com/movie/running/current.naver"; // 네이버영화 현재 상영작 예매순위 1~20위
+    static String _movie_url = "https://movie.naver.com";
+    static String _current_movie_path = "/movie/running/current.naver"; // 네이버영화 현재 상영작 예매순위 1~20위
     static String _schdule_url = "https://movie.naver.com/movie/running/premovie.nhn?order=reserve"; // 네이버영화 개봉 예정작 예매순 1~20위
 
     public ListCardReponse.ListCard CurrentSearch(String type, String typeKR, int movieCount) throws JsonProcessingException, IOException
@@ -38,7 +39,7 @@ public class Movie {
             buttons.add(button);
         }
 
-        Connection conn = Jsoup.connect(_current_movie_url + "?" + param);
+        Connection conn = Jsoup.connect(_movie_url + _current_movie_path + "?" + param);
         Document document = conn.get();
 
         Element movieList = document.selectFirst(".lst_detail_t1");
@@ -63,7 +64,7 @@ public class Movie {
             item.setDescription("장르 : " + genre.replace(" ", ",") + " | 개봉일 : " + releaseDate + " | 평점 : " + giveGrades);
             item.setImageUrl(imgUrl);
 
-            link.setWeb(movieUrl);
+            link.setWeb(_movie_url + movieUrl);
             item.setLink(link);
 
             items.add(item);
