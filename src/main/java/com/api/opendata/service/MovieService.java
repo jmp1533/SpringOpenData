@@ -25,27 +25,15 @@ public class MovieService {
         ListCardReponse.Carousel carousel = new ListCardReponse.Carousel();
         ArrayList<ListCardReponse.ListCard> ListCardItems = new ArrayList<>();
 
-        LinkedHashMap<String, String> types = new LinkedHashMap<>();
-        int movieCount = 0;
+        String type = "";
+        String typeKR = "";
         String response = "";
 
         try{
-            types.put("open", "개봉순");
-            types.put("point", "평점순");
-            types.put("likeCount", "좋아요순");
+            typeKR = request.getUserRequest().getUtterance().split(" ")[1];
+            type = GetSearchType(typeKR);
 
-            if("현재 상영영화 더보기".equals(request.getUserRequest().getUtterance())){
-                movieCount = 5;
-
-                quickReplies.add(GetQuickReplies("처음으로", "영화"));
-                quickReplies.add(GetQuickReplies("예매하기", "영화 예매"));
-            }
-
-            for(String type : types.keySet()) {
-                ListCardReponse.ListCard listCard = movie.CurrentSearch(type, types.get(type), movieCount);
-
-                ListCardItems.add(listCard);
-            }
+            ListCardItems = movie.CurrentSearch(type, typeKR);
 
             carousel.setType("listCard");
             carousel.setItems(ListCardItems);
@@ -55,9 +43,12 @@ public class MovieService {
 
             Template.setOutputs(outputList);
 
-            if(0 != quickReplies.size()){
-                Template.setQuickReplies(quickReplies);
-            }
+            quickReplies.add(GetQuickReplies("처음으로", "영화"));
+            quickReplies.add(GetQuickReplies("개봉순", "상영영화 개봉순"));
+            quickReplies.add(GetQuickReplies("평점순", "상영영화 평점순"));
+            quickReplies.add(GetQuickReplies("좋아요순", "상영영화 좋아요순"));
+            quickReplies.add(GetQuickReplies("예매하기", "영화 예매"));
+            Template.setQuickReplies(quickReplies);
 
             listCardRS.setVersion("2.0");
             listCardRS.setTemplate(Template);
@@ -79,5 +70,20 @@ public class MovieService {
         quickReplies.setMessageText(message);
 
         return quickReplies;
+    }
+
+    public String GetSearchType(String value){
+        String type = "open";
+
+        switch (value){
+            case "평점순":
+                type = "point";
+                break;
+            case "좋아요순":
+                type = "likeCount";
+                break;
+        }
+
+        return type;
     }
 }

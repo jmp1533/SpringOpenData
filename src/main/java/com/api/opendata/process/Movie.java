@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 @Service
 public class Movie {
@@ -22,28 +23,24 @@ public class Movie {
     static String _current_movie_path = "/movie/running/current.naver"; // 네이버영화 현재 상영작 예매순위 1~20위
     static String _schdule_url = "https://movie.naver.com/movie/running/premovie.nhn?order=reserve"; // 네이버영화 개봉 예정작 예매순 1~20위
 
-    public ListCardReponse.ListCard CurrentSearch(String type, String typeKR, int movieCount) throws JsonProcessingException, IOException
+    public ArrayList<ListCardReponse.ListCard> CurrentSearch(String type, String typeKR) throws JsonProcessingException, IOException
     {
-        ListCardReponse.ListCard listCard = new ListCardReponse.ListCard();
+        ArrayList<ListCardReponse.ListCard> listCards = new ArrayList<>();
+        ListCardReponse.ListCard listCard = null;
         ListCardReponse.Header header = new ListCardReponse.Header();
-        ArrayList<ListCardReponse.Item> items = new ArrayList<>();
+        HashMap<Integer, ArrayList<ListCardReponse.Item>> itemsMap = new HashMap<>();
+        ArrayList<ListCardReponse.Item> items = null;
         ArrayList<ListCardReponse.Button> buttons = new ArrayList<>();
         ListCardReponse.Button button = new ListCardReponse.Button();
+        int movieCount = 0;
 
         String param = GetParam(type);
-
-        if(0 == movieCount){
-            button.setLabel("더보기");
-            button.setAction("message");
-            button.setMessageText("현재 상영영화 더보기");
-            buttons.add(button);
-        }
 
         Connection conn = Jsoup.connect(_movie_url + _current_movie_path + "?" + param);
         Document document = conn.get();
 
         Element movieList = document.selectFirst(".lst_detail_t1");
-        Element[] filterMovieList = Arrays.copyOfRange(movieList.children().toArray(new Element[5]), (0+movieCount), (5+movieCount));
+        Element[] filterMovieList = Arrays.copyOfRange(movieList.children().toArray(new Element[10]), 0, 10);
 
         for (Element li : filterMovieList) {
             ListCardReponse.Item item = new ListCardReponse.Item();
@@ -67,20 +64,40 @@ public class Movie {
             link.setWeb(_movie_url + movieUrl);
             item.setLink(link);
 
-            items.add(item);
+            int key = movieCount / 5;
+            if(itemsMap.containsKey(key)){
+                itemsMap.get(key).add(item);
+            }else{
+                items = new ArrayList<>();
+                items.add(item);
+
+                itemsMap.put(key, items);
+            }
+
             /*System.out.println(title + " | " + genre + " | " + releaseDate);
             System.out.println("평점 : " + giveGrades + "\t" + "예매율 : " + 0 + "%");*/
+
+            movieCount++;
         }
 
-        header.setTitle("현재 상영영화 (" + typeKR + ")");
-        listCard.setHeader(header);
-        listCard.setItems(items);
+
+
+        for(int key : itemsMap.keySet()){
+            listCard = new ListCardReponse.ListCard();
+
+            header.setTitle("현재 상영영화 (" + typeKR + ")");
+
+            listCard.setHeader(header);
+            listCard.setItems(itemsMap.get(key));
+
+            listCards.add(listCard);
+        }
 
         if(0 !=buttons.size()){
             listCard.setButtons(buttons);
         }
 
-        return listCard;
+        return listCards;
     }
 
     public String GetParam(String getOrder){
