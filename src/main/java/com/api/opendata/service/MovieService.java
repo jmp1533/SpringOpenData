@@ -26,11 +26,14 @@ public class MovieService {
         ArrayList<ListCardReponse.ListCard> ListCardItems = new ArrayList<>();
 
         String type = "";
-        String typeKR = "";
+        String typeKR = "개봉순";
         String response = "";
 
         try{
-            typeKR = request.getUserRequest().getUtterance().split(" ")[1];
+            if(false == "영화 보기".equals(request.getUserRequest().getUtterance()) && 1 < request.getUserRequest().getUtterance().split(" ").length){
+                typeKR = request.getUserRequest().getUtterance().split(" ")[1];
+            }
+
             type = GetSearchType(typeKR);
 
             ListCardItems = movie.CurrentSearch(type, typeKR);
