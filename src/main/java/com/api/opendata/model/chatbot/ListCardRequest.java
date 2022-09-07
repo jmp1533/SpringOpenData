@@ -8,5 +8,28 @@ import lombok.Setter;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ListCardRequest {
-    private int number;
+    private Action action;
+    private UserRequest userRequest;
+
+    @Getter
+    @Setter
+    static public class UserRequest{
+        private String utterance;
+    }
+
+    @Getter
+    @Setter
+    static public class Action
+    {
+        private String name;
+        private Params params;
+    }
+
+    @Getter
+    @Setter
+    static public class Params
+    {
+        private String order;
+        private int number;
+    }
 }

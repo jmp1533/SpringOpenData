@@ -11,9 +11,9 @@ import java.util.List;
 
 @Service
 public class BoxOfficeService {
-    @Autowired
+    //@Autowired
     private BoxOffice boxOffice;
-    @Autowired
+    //@Autowired
     private BoxOfficeRepository boxOfficeRepository;
 
     public HashMap<String, String> RunSearch(String targetDt)

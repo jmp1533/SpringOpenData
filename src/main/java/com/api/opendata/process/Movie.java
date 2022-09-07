@@ -14,37 +14,37 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Service
 public class Movie {
-    static String _movie_url = "https://movie.naver.com";
+    static String _current_movie_url = "https://movie.naver.com/movie/running/current.naver"; // 네이버영화 현재 상영작 예매순위 1~20위
     static String _schdule_url = "https://movie.naver.com/movie/running/premovie.nhn?order=reserve"; // 네이버영화 개봉 예정작 예매순 1~20위
 
-    public ListCardReponse RankMovie(ListCardRequest request) throws JsonProcessingException, IOException
+    public ListCardReponse.ListCard CurrentSearch(String type, String typeKR, int movieCount) throws JsonProcessingException, IOException
     {
-        ListCardReponse listCardRS = new ListCardReponse();
-        ListCardReponse.Template Template = new ListCardReponse.Template();
-        ArrayList<ListCardReponse.Output> outputList = new ArrayList<>();
-        ListCardReponse.Output output = new ListCardReponse.Output();
         ListCardReponse.ListCard listCard = new ListCardReponse.ListCard();
         ListCardReponse.Header header = new ListCardReponse.Header();
         ArrayList<ListCardReponse.Item> items = new ArrayList<>();
         ArrayList<ListCardReponse.Button> buttons = new ArrayList<>();
         ListCardReponse.Button button = new ListCardReponse.Button();
 
-        String urlPath = "/movie/running/current.nhn"; // 네이버영화 현재 상영작 예매순위 1~20위
-        int movieCount = 0;
+        String param = GetParam(type);
 
-        Connection conn = Jsoup.connect(_movie_url + urlPath);
+        if(0 == movieCount){
+            button.setLabel("더보기");
+            button.setAction("message");
+            button.setMessageText("현재 상영영화 더보기");
+            buttons.add(button);
+        }
+
+        Connection conn = Jsoup.connect(_current_movie_url + "?" + param);
         Document document = conn.get();
 
         Element movieList = document.selectFirst(".lst_detail_t1");
+        Element[] filterMovieList = Arrays.copyOfRange(movieList.children().toArray(new Element[5]), (0+movieCount), (5+movieCount));
 
-        for (Element li : movieList.children()) {
-            if(5 < movieCount){
-                break;
-            }
-
+        for (Element li : filterMovieList) {
             ListCardReponse.Item item = new ListCardReponse.Item();
             ListCardReponse.Link link = new ListCardReponse.Link();
 
@@ -69,28 +69,26 @@ public class Movie {
             items.add(item);
             /*System.out.println(title + " | " + genre + " | " + releaseDate);
             System.out.println("평점 : " + giveGrades + "\t" + "예매율 : " + 0 + "%");*/
-
-            movieCount++;
         }
 
-        header.setTitle("영화 개봉 순위");
+        header.setTitle("현재 상영영화 (" + typeKR + ")");
         listCard.setHeader(header);
-
         listCard.setItems(items);
 
-        button.setLabel("더보기");
-        button.setAction("message");
-        button.setMessageText("영화 순위 더보기");
-        buttons.add(button);
-        listCard.setButtons(buttons);
+        if(0 !=buttons.size()){
+            listCard.setButtons(buttons);
+        }
 
-        output.setListCard(listCard);
-        outputList.add(output);
-        Template.setOutputs(outputList);
+        return listCard;
+    }
 
-        listCardRS.setVersion("2.0");
-        listCardRS.setTemplate(Template);
+    public String GetParam(String getOrder){
+        StringBuffer param = new StringBuffer();
 
-        return listCardRS;
+        param.append("view=list");
+        param.append("&tab=normal");
+        param.append("&order=" + getOrder);
+
+        return param.toString();
     }
 }

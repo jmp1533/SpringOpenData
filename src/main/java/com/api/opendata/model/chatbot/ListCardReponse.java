@@ -7,31 +7,51 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ListCardReponse {
-    @Getter
-    @Setter
     private String version;
-    @Getter
-    @Setter
     private Template template;
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Template
     {
         private ArrayList<Output> outputs;
+        private ArrayList<QuickReplies> quickReplies;
     }
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Output
     {
         private ListCard listCard;
+        private Carousel carousel;
     }
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    static public class QuickReplies{
+        private String messageText;
+        private String action;
+        private String label;
+    }
+
+    @Getter
+    @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    static public class Carousel{
+        private String type;
+        private ArrayList<ListCard> items;
+    }
+
+    @Getter
+    @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class ListCard
     {
         private Header header;
@@ -41,6 +61,7 @@ public class ListCardReponse {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Header
     {
         private String title;
@@ -48,6 +69,7 @@ public class ListCardReponse {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Item
     {
         private String title;
@@ -62,6 +84,7 @@ public class ListCardReponse {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Link
     {
         private String web;
@@ -69,6 +92,7 @@ public class ListCardReponse {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Extra
     {
         private String key1;
@@ -77,6 +101,7 @@ public class ListCardReponse {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static public class Button
     {
         private String label;

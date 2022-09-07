@@ -12,9 +12,9 @@ import java.util.List;
 
 @Repository
 public class BoxOfficeDao {
-    @Autowired
+    //@Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
+    //@Autowired
     private SqlSessionTemplate sqlSession;
 
     public List<MovieListModel.Movie> SearchMovie() {
