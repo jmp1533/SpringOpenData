@@ -30,8 +30,7 @@ public class Movie {
         ListCardReponse.Header header = new ListCardReponse.Header();
         HashMap<Integer, ArrayList<ListCardReponse.Item>> itemsMap = new HashMap<>();
         ArrayList<ListCardReponse.Item> items = null;
-        ArrayList<ListCardReponse.Button> buttons = new ArrayList<>();
-        ListCardReponse.Button button = new ListCardReponse.Button();
+
         int movieCount = 0;
 
         String param = GetParam(type);
@@ -58,7 +57,8 @@ public class Movie {
             String releaseDate = releaseDateElement.html().substring(startIndex+2, lastIndex+2);
 
             item.setTitle(title);
-            item.setDescription("장르 : " + genre.replace(" ", ",") + " | 개봉일 : " + releaseDate + " | 평점 : " + giveGrades);
+            //item.setDescription("장르 : " + genre.replace(" ", ",") + "\n" + releaseDate + " | 평점 : " + giveGrades);
+            item.setDescription(releaseDate + " / 평점 : " + giveGrades);
             item.setImageUrl(imgUrl);
 
             link.setWeb(_movie_url + movieUrl);
@@ -80,21 +80,15 @@ public class Movie {
             movieCount++;
         }
 
-
-
         for(int key : itemsMap.keySet()){
             listCard = new ListCardReponse.ListCard();
 
-            header.setTitle("현재 상영영화 (" + typeKR + ")");
+            header.setTitle("현재 " + typeKR);
 
             listCard.setHeader(header);
             listCard.setItems(itemsMap.get(key));
 
             listCards.add(listCard);
-        }
-
-        if(0 !=buttons.size()){
-            listCard.setButtons(buttons);
         }
 
         return listCards;

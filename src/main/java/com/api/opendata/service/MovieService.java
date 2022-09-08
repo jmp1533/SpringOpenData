@@ -1,5 +1,6 @@
 package com.api.opendata.service;
 
+import com.api.opendata.common.util.MovieEnum;
 import com.api.opendata.model.chatbot.ListCardRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,15 +27,19 @@ public class MovieService {
         ArrayList<ListCardReponse.ListCard> ListCardItems = new ArrayList<>();
 
         String type = "";
-        String typeKR = "개봉순";
+        String typeKR = "";
         String response = "";
 
         try{
-            if(false == "영화 보기".equals(request.getUserRequest().getUtterance()) && 1 < request.getUserRequest().getUtterance().split(" ").length){
-                typeKR = request.getUserRequest().getUtterance().split(" ")[1];
-            }
+            MovieEnum movieEnum = MovieEnum.findMovieCodeName(MovieEnum.createMovieCode(), request.getUserRequest().getUtterance());
 
-            type = GetSearchType(typeKR);
+            if(null != movieEnum){
+                type = movieEnum.getCode();
+                typeKR = movieEnum.getCodeName();
+            }else{
+                type = MovieEnum.OPENSORT.getCode();
+                typeKR = MovieEnum.OPENSORT.getCodeName();
+            }
 
             ListCardItems = movie.CurrentSearch(type, typeKR);
 
@@ -73,20 +78,5 @@ public class MovieService {
         quickReplies.setMessageText(message);
 
         return quickReplies;
-    }
-
-    public String GetSearchType(String value){
-        String type = "open";
-
-        switch (value){
-            case "평점순":
-                type = "point";
-                break;
-            case "좋아요순":
-                type = "likeCount";
-                break;
-        }
-
-        return type;
     }
 }
