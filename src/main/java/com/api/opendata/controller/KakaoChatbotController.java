@@ -25,5 +25,16 @@ public class KakaoChatbotController {
 
         return ResponseEntity.ok().headers(headers).body(response);
     }
+    //premovie
+    @PostMapping(value = "/movie/premovie", produces = "application/json; charset=UTF8")
+    public ResponseEntity SearchPreMovie(@RequestBody ListCardRequest request)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+
+        String response = movieService.PreMovieSearch(request);
+
+        return ResponseEntity.ok().headers(headers).body(response);
+    }
 }
 

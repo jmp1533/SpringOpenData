@@ -69,6 +69,17 @@ public class MovieService {
 
         return response;
     }
+    public String PreMovieSearch(ListCardRequest request){
+        String response = "";
+
+        try{
+
+        }catch (Exception e){
+
+        }
+        
+        return response;
+    }
 
     public ListCardReponse.QuickReplies GetQuickReplies(String label, String message){
         ListCardReponse.QuickReplies quickReplies = new ListCardReponse.QuickReplies();
