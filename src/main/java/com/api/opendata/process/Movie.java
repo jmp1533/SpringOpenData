@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class Movie {
     static String _movie_url = "https://movie.naver.com";
     static String _current_movie_path = "/movie/running/current.naver"; // 네이버영화 현재 상영작 예매순위 1~20위
-    static String _schdule_url = "https://movie.naver.com/movie/running/premovie.nhn?order=reserve"; // 네이버영화 개봉 예정작 예매순 1~20위
+    static String _schdule_movie_path = "/movie/running/premovie.nhn"; // 네이버영화 개봉 예정작 예매순 1~20위
 
     public ArrayList<ListCardReponse.ListCard> CurrentSearch(String type, String typeKR) throws JsonProcessingException, IOException
     {
@@ -92,6 +92,14 @@ public class Movie {
         }
 
         return listCards;
+    }
+
+    public void PreSearch() throws JsonProcessingException, IOException{
+        Connection conn = Jsoup.connect(_movie_url + _schdule_movie_path + "?" + "order=reserve");
+        Document document = conn.get();
+
+
+
     }
 
     public String GetParam(String getOrder){
