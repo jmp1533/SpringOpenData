@@ -94,12 +94,18 @@ public class Movie {
         return listCards;
     }
 
-    public void PreSearch() throws JsonProcessingException, IOException{
+    public ArrayList<ListCardReponse.ListCard> PreSearch() throws JsonProcessingException, IOException{
+        ArrayList<ListCardReponse.ListCard> listCards = new ArrayList<>();
+        ListCardReponse.ListCard listCard = null;
+        ListCardReponse.Header header = new ListCardReponse.Header();
+        HashMap<Integer, ArrayList<ListCardReponse.Item>> itemsMap = new HashMap<>();
+        ArrayList<ListCardReponse.Item> items = null;
+
         Connection conn = Jsoup.connect(_movie_url + _schdule_movie_path + "?" + "order=reserve");
         Document document = conn.get();
 
 
-
+        return listCards;
     }
 
     public String GetParam(String getOrder){

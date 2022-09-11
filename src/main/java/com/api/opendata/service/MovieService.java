@@ -70,9 +70,13 @@ public class MovieService {
         return response;
     }
     public String PreMovieSearch(ListCardRequest request){
+        ListCardReponse listCardRS = new ListCardReponse();
         String response = "";
 
         try{
+            movie.PreSearch();
+
+            response = Utility.JsonSerialize(listCardRS);
 
         }catch (Exception e){
 
