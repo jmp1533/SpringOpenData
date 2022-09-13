@@ -3,6 +3,7 @@ package com.api.opendata.process;
 
 import com.api.opendata.model.chatbot.ListCardReponse;
 import com.api.opendata.model.chatbot.ListCardRequest;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -101,8 +102,25 @@ public class Movie {
         HashMap<Integer, ArrayList<ListCardReponse.Item>> itemsMap = new HashMap<>();
         ArrayList<ListCardReponse.Item> items = null;
 
-        Connection conn = Jsoup.connect(_movie_url + _schdule_movie_path + "?" + "order=reserve");
+        Connection conn = Jsoup.connect(_movie_url + _schdule_movie_path + "?" + "order=open");
         Document document = conn.get();
+
+        Elements movieList = document.select(".lst_wrap .lst_detail_t1 li");
+
+        for(Element movie : movieList){
+            String movieUrl = movie.select(".thumb a").attr("href"); //영화URL
+            String imgUrl = movie.select(".thumb a img").attr("src"); //이미지URL
+            String title = movie.select(".tit a").text();
+
+            Element releaseDateElement = movie.select(".lst_dsc .info_txt1 .tit_t1").next().first(); //개봉일
+            int lastIndex = releaseDateElement.html().indexOf("개봉");
+            int startIndex = releaseDateElement.html().lastIndexOf(">", lastIndex);
+            String releaseDate = releaseDateElement.html().substring(startIndex+2, lastIndex+2);
+
+
+            /*System.out.println(title + " | " + releaseDate);
+            System.out.println("평점 : " + giveGrades + "\t" + "예매율 : " + 0 + "%");*/
+        }
 
 
         return listCards;
