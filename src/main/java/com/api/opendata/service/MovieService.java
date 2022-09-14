@@ -16,7 +16,7 @@ public class MovieService {
     @Autowired
     private Movie movie;
 
-    public String RunningSearch(ListCardRequest request)
+    public String CurrentSearch(ListCardRequest request)
     {
         ListCardReponse listCardRS = new ListCardReponse();
         ListCardReponse.Template Template = new ListCardReponse.Template();
@@ -24,7 +24,7 @@ public class MovieService {
         ListCardReponse.Output output = new ListCardReponse.Output();
         ArrayList<ListCardReponse.QuickReplies> quickReplies = new ArrayList<>();
         ListCardReponse.Carousel carousel = new ListCardReponse.Carousel();
-        ArrayList<ListCardReponse.ListCard> ListCardItems = new ArrayList<>();
+        ArrayList<ListCardReponse.ListCard> listCardItems = new ArrayList<>();
 
         String type = "";
         String typeKR = "";
@@ -41,10 +41,10 @@ public class MovieService {
                 typeKR = MovieEnum.OPENSORT.getCodeName();
             }
 
-            ListCardItems = movie.CurrentSearch(type, typeKR);
+            listCardItems = movie.CurrentSearch(type, typeKR);
 
             carousel.setType("listCard");
-            carousel.setItems(ListCardItems);
+            carousel.setItems(listCardItems);
 
             output.setCarousel(carousel);
             outputList.add(output);
@@ -69,17 +69,39 @@ public class MovieService {
 
         return response;
     }
-    public String PreMovieSearch(ListCardRequest request){
+    public String PremiereSearch(ListCardRequest request){
         ListCardReponse listCardRS = new ListCardReponse();
+        ListCardReponse.Template Template = new ListCardReponse.Template();
+        ArrayList<ListCardReponse.Output> outputList = new ArrayList<>();
+        ListCardReponse.Output output = new ListCardReponse.Output();
+        ArrayList<ListCardReponse.QuickReplies> quickReplies = new ArrayList<>();
+        ListCardReponse.Carousel carousel = new ListCardReponse.Carousel();
+        ArrayList<ListCardReponse.ListCard> listCardItems = new ArrayList<>();
+
         String response = "";
 
         try{
-            movie.PreSearch();
+            listCardItems = movie.PremiereSearch();
+
+            carousel.setType("listCard");
+            carousel.setItems(listCardItems);
+
+            output.setCarousel(carousel);
+            outputList.add(output);
+
+            Template.setOutputs(outputList);
+
+            quickReplies.add(GetQuickReplies("처음으로", "영화"));
+            quickReplies.add(GetQuickReplies("예매하기", "영화 예매"));
+            Template.setQuickReplies(quickReplies);
+
+            listCardRS.setVersion("2.0");
+            listCardRS.setTemplate(Template);
 
             response = Utility.JsonSerialize(listCardRS);
 
         }catch (Exception e){
-
+            response = e.getMessage();
         }
         
         return response;

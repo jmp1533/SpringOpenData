@@ -15,24 +15,24 @@ public class KakaoChatbotController {
     @Autowired
     private MovieService movieService;
 
-    @PostMapping(value = "/movie/running", produces = "application/json; charset=UTF8")
-    public ResponseEntity SearchMovie(@RequestBody ListCardRequest request)
+    @PostMapping(value = "/movie/current", produces = "application/json; charset=UTF8")
+    public ResponseEntity CurrentMovie(@RequestBody ListCardRequest request)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
-        String response = movieService.RunningSearch(request);
+        String response = movieService.CurrentSearch(request);
 
         return ResponseEntity.ok().headers(headers).body(response);
     }
-    //premovie
-    @PostMapping(value = "/movie/premovie", produces = "application/json; charset=UTF8")
-    public ResponseEntity SearchPreMovie(@RequestBody ListCardRequest request)
+
+    @PostMapping(value = "/movie/premiere", produces = "application/json; charset=UTF8")
+    public ResponseEntity PremiereMovie(@RequestBody ListCardRequest request)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
-        String response = movieService.PreMovieSearch(request);
+        String response = movieService.PremiereSearch(request);
 
         return ResponseEntity.ok().headers(headers).body(response);
     }

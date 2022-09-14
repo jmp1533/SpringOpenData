@@ -21,8 +21,8 @@ import java.util.HashMap;
 @Service
 public class Movie {
     static String _movie_url = "https://movie.naver.com";
-    static String _current_movie_path = "/movie/running/current.naver"; // 네이버영화 현재 상영작 예매순위 1~20위
-    static String _schdule_movie_path = "/movie/running/premovie.nhn"; // 네이버영화 개봉 예정작 예매순 1~20위
+    static String _current_movie_path = "/movie/running/current.naver"; // 네이버영화 현재 상영작
+    static String _schdule_movie_path = "/movie/running/premovie.naver"; // 네이버영화 개봉 예정작
 
     public ArrayList<ListCardReponse.ListCard> CurrentSearch(String type, String typeKR) throws JsonProcessingException, IOException
     {
@@ -65,6 +65,9 @@ public class Movie {
             link.setWeb(_movie_url + movieUrl);
             item.setLink(link);
 
+            /*System.out.println(title + " | " + genre + " | " + releaseDate);
+            System.out.println("평점 : " + giveGrades + "\t" + "예매율 : " + 0 + "%");*/
+
             int key = movieCount / 5;
             if(itemsMap.containsKey(key)){
                 itemsMap.get(key).add(item);
@@ -74,9 +77,6 @@ public class Movie {
 
                 itemsMap.put(key, items);
             }
-
-            /*System.out.println(title + " | " + genre + " | " + releaseDate);
-            System.out.println("평점 : " + giveGrades + "\t" + "예매율 : " + 0 + "%");*/
 
             movieCount++;
         }
@@ -95,19 +95,24 @@ public class Movie {
         return listCards;
     }
 
-    public ArrayList<ListCardReponse.ListCard> PreSearch() throws JsonProcessingException, IOException{
+    public ArrayList<ListCardReponse.ListCard> PremiereSearch() throws JsonProcessingException, IOException{
         ArrayList<ListCardReponse.ListCard> listCards = new ArrayList<>();
         ListCardReponse.ListCard listCard = null;
         ListCardReponse.Header header = new ListCardReponse.Header();
         HashMap<Integer, ArrayList<ListCardReponse.Item>> itemsMap = new HashMap<>();
         ArrayList<ListCardReponse.Item> items = null;
 
+        int movieCount = 0;
+
         Connection conn = Jsoup.connect(_movie_url + _schdule_movie_path + "?" + "order=open");
         Document document = conn.get();
 
-        Elements movieList = document.select(".lst_wrap .lst_detail_t1 li");
+        Element[] movieList = Arrays.copyOfRange(document.select(".lst_wrap .lst_detail_t1 li").toArray(new Element[10]), 1, 11);
 
         for(Element movie : movieList){
+            ListCardReponse.Item item = new ListCardReponse.Item();
+            ListCardReponse.Link link = new ListCardReponse.Link();
+
             String movieUrl = movie.select(".thumb a").attr("href"); //영화URL
             String imgUrl = movie.select(".thumb a img").attr("src"); //이미지URL
             String title = movie.select(".tit a").text();
@@ -117,11 +122,39 @@ public class Movie {
             int startIndex = releaseDateElement.html().lastIndexOf(">", lastIndex);
             String releaseDate = releaseDateElement.html().substring(startIndex+2, lastIndex+2);
 
+            item.setTitle(title);
+            item.setDescription(releaseDate);
+            item.setImageUrl(imgUrl);
+
+            link.setWeb(_movie_url + movieUrl);
+            item.setLink(link);
 
             /*System.out.println(title + " | " + releaseDate);
             System.out.println("평점 : " + giveGrades + "\t" + "예매율 : " + 0 + "%");*/
+
+            int key = movieCount / 5;
+            if(itemsMap.containsKey(key)){
+                itemsMap.get(key).add(item);
+            }else{
+                items = new ArrayList<>();
+                items.add(item);
+
+                itemsMap.put(key, items);
+            }
+
+            movieCount++;
         }
 
+        for(int key : itemsMap.keySet()){
+            listCard = new ListCardReponse.ListCard();
+
+            header.setTitle("개봉 예정작");
+
+            listCard.setHeader(header);
+            listCard.setItems(itemsMap.get(key));
+
+            listCards.add(listCard);
+        }
 
         return listCards;
     }
